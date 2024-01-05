@@ -1,0 +1,8 @@
+{
+  "name": "@vue/shared",
+  "version": "1.0.0",
+  "description": "在@vue包之间共享的内部实用程序函数和常量",
+  "main": "index.ts",
+  "author": "",
+  "license": "ISC"
+}

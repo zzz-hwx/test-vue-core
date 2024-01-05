@@ -1,0 +1,28 @@
+{
+  "name": "test-vue-core",
+  "version": "1.0.0",
+  "description": "vue源码学习环境",
+  "main": "index.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "parcel packages/vue/examples/index.html"
+  },
+  "keywords": [
+    "vue"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.3",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "eslint-define-config": "^2.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.2",
+    "parcel": "^2.11.0",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  }
+}

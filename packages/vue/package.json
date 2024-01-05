@@ -1,0 +1,8 @@
+{
+  "name": "vue",
+  "version": "1.0.0",
+  "description": "渐进式JavaScript框架",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
+}
