@@ -1,9 +1,16 @@
-import { reactive } from '@vue/reactivity';
+import { effect, reactive } from '@vue/reactivity';
 
 const obj = reactive({ name: '邢牧', content: '浅浅测试下' });
 
-console.log(obj.name);
+effect(() => {
+  (document.getElementById('app') as HTMLElement).innerText = obj.name;
+});
 
-obj.name = 'xxx';
+effect(() => {
+  (document.getElementById('app2') as HTMLElement).innerText = obj.content;
+});
 
-console.log(obj.name);
+setTimeout(() => {
+  obj.name = '修改数据';
+  obj.content = '数据变化';
+}, 2000);

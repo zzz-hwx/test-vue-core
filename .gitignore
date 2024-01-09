@@ -13,3 +13,4 @@ dts-build/packages
 
 pnpm-lock.yaml
 .parcel-cache
+.vscode
