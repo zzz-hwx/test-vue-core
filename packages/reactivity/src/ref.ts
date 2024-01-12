@@ -75,7 +75,11 @@ type RefBase<T> = {
   value: T;
 };
 
-// 收集依赖
+/**
+ * 收集依赖
+ * @param ref 
+ * @returns 
+ */
 export function trackRefValue(ref: RefBase<any>) {
   if (!shouldTrack || !activeEffect) return;
   ref = toRaw(ref);
@@ -85,6 +89,13 @@ export function trackRefValue(ref: RefBase<any>) {
   );
 }
 
+/**
+ * 触发依赖
+ * @param ref 
+ * @param dirtyLevel 
+ * @param newVal 
+ * @returns 
+ */
 export function triggerRefValue(
   ref: RefBase<any>,
   dirtyLevel: DirtyLevels = DirtyLevels.Dirty,

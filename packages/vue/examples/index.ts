@@ -1,19 +1,20 @@
-import { effect, ref } from '@vue/reactivity';
+import { computed, effect, reactive, ref } from '@vue/reactivity';
 
-const strRef = ref('一行文字呀');
-const objRef = ref({ name: '邢牧', content: '浅浅测试下' });
+const obj = reactive({ name: '张三' });
 
-effect(() => {
-  (document.getElementById('app') as HTMLElement).innerText = strRef.value as string;
+const nameRef = computed(() => {
+  return `姓名: ${obj.name}`;
 });
 
 effect(() => {
-  (document.getElementById('app2') as HTMLElement).innerText = objRef.value.content;
+  console.log('--- effect --->');
+  (document.getElementById('app') as HTMLElement).innerText = nameRef.value;
 });
 
 setTimeout(() => {
   console.log('--- setTimeout --->');
-  strRef.value = '修改数据';
-
-  objRef.value.content = '数据变化';
+  // reactive get track 记录computed ?
+  // reactive set trigger 修改 computed dirty
+  // effect 重新执行 ?
+  obj.name = '李四';
 }, 2 * 1000);
