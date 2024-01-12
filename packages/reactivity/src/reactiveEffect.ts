@@ -1,5 +1,5 @@
 import { isArray, isIntegerKey, isMap, isSymbol } from '@vue/shared';
-import { TrackOpTypes, TriggerOpTypes } from './constants';
+import { DirtyLevels, TrackOpTypes, TriggerOpTypes } from './constants';
 import { Dep, createDep } from './dep';
 import { activeEffect, trackEffect, triggerEffects } from './effect';
 
@@ -99,6 +99,6 @@ export function trigger(
   }
   for (const dep of deps) {
     if (!dep) continue;
-    triggerEffects(dep);
+    triggerEffects(dep, DirtyLevels.Dirty);
   }
 }

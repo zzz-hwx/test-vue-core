@@ -1,13 +1,22 @@
 import { isObject } from '@vue/shared';
 import { mutableHandlers } from './baseHandlers';
+import { ReactiveFlags } from './constants';
 
-export interface Target {}
+export interface Target {
+  [ReactiveFlags.SKIP]?: boolean;
+  [ReactiveFlags.IS_REACTIVE]?: boolean;
+  [ReactiveFlags.IS_READONLY]?: boolean;
+  [ReactiveFlags.IS_SHALLOW]?: boolean;
+  [ReactiveFlags.RAW]?: any;
+}
 
 export const reactiveMap = new WeakMap<Target, any>();
 
 export function reactive(target: object) {
   return createReactiveObject(target, mutableHandlers, reactiveMap);
 }
+
+export declare const ShallowReactiveMarker: unique symbol;
 
 /**
  * 创建reactive对象
@@ -30,4 +39,21 @@ function createReactiveObject(
   const proxy = new Proxy(target, baseHandlers);
   proxyMap.set(target, proxy);
   return proxy;
+}
+
+export function toReactive<T extends unknown>(value: T): T {
+  return isObject(value) ? reactive(value) : value;
+}
+
+export function toRaw<T>(observed: T): T {
+  const raw = observed && (observed as Target)[ReactiveFlags.RAW];
+  return raw ? toRaw(raw) : observed;
+}
+
+export function isShallow(value: unknown): boolean {
+  return !!(value && (value as Target)[ReactiveFlags.IS_SHALLOW]);
+}
+
+export function isReadonly(value: unknown): boolean {
+  return !!(value && (value as Target)[ReactiveFlags.IS_READONLY]);
 }

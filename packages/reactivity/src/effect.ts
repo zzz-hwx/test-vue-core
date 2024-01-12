@@ -1,3 +1,4 @@
+import { DirtyLevels } from './constants';
 import { Dep } from './dep';
 
 /**
@@ -40,6 +41,8 @@ export function effect<T = any>(fn: () => T) {
   _effect.run();
 }
 
+export let shouldTrack = true;
+
 export function trackEffect(effect: ReactiveEffect, dep: Dep) {
   if (dep.get(effect) === effect._trackId) return;
   dep.set(effect, effect._trackId);
@@ -50,8 +53,10 @@ export function trackEffect(effect: ReactiveEffect, dep: Dep) {
   effect._depsLength++;
 }
 
-export function triggerEffects(dep: Dep) {
+export function triggerEffects(dep: Dep, dirtyLevel: DirtyLevels) {
+  console.log('--- triggerEffects --->', dep);
   for (const effect of dep.keys()) {
-    effect.run(); // ???
+    effect.run();
+    // TODO:
   }
 }
