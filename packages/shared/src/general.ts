@@ -28,11 +28,16 @@ export const isIntegerKey = (key: unknown) =>
   key[0] !== '-' &&
   '' + parseInt(key, 10) === key;
 
-  /**
-   * 比较值是否更改
-   * @param value 
-   * @param oldValue 
-   * @returns 
-   */
+/**
+ * 比较值是否更改
+ * @param value
+ * @param oldValue
+ * @returns
+ */
 export const hasChanged = (value: any, oldValue: any): boolean =>
   !Object.is(value, oldValue);
+
+export const isFunction = (val: unknown): val is Function =>
+  typeof val === 'function';
+
+export const NOOP = () => {};

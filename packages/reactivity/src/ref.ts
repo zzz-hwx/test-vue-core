@@ -14,6 +14,7 @@ import {
   trackEffect,
   triggerEffects,
 } from './effect';
+import { ComputedRefImpl } from './computed';
 
 declare const RefSymbol: unique symbol;
 export declare const RawSymbol: unique symbol;
@@ -75,16 +76,31 @@ type RefBase<T> = {
   value: T;
 };
 
-// 收集依赖
+/**
+ * 收集依赖
+ * @param ref
+ * @returns
+ */
 export function trackRefValue(ref: RefBase<any>) {
   if (!shouldTrack || !activeEffect) return;
   ref = toRaw(ref);
   trackEffect(
     activeEffect,
-    ref.dep || (ref.dep = createDep(() => (ref.dep = undefined))),
+    ref.dep ||
+      (ref.dep = createDep(
+        () => (ref.dep = undefined),
+        ref instanceof ComputedRefImpl ? ref : undefined,
+      )),
   );
 }
 
+/**
+ * 触发依赖
+ * @param ref
+ * @param dirtyLevel
+ * @param newVal
+ * @returns
+ */
 export function triggerRefValue(
   ref: RefBase<any>,
   dirtyLevel: DirtyLevels = DirtyLevels.Dirty,
@@ -139,7 +155,7 @@ export type UnwrapRefSimple<T> = T extends
  * @param value 要包装在ref中的数据
  * @returns
  */
-export function ref<T>(value: T): Ref<UnwrapRef<T>>;  // 上面一堆的类型推导...
+export function ref<T>(value: T): Ref<UnwrapRef<T>>; // 上面一堆的类型推导...
 export function ref<T = any>(): Ref<T | undefined>;
 export function ref(value?: unknown) {
   return createRef(value, false);

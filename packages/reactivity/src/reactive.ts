@@ -13,7 +13,7 @@ export interface Target {
 export const reactiveMap = new WeakMap<Target, any>();
 
 export function reactive(target: object) {
-  return createReactiveObject(target, mutableHandlers, reactiveMap);
+  return createReactiveObject(target, false, mutableHandlers, reactiveMap);
 }
 
 export declare const ShallowReactiveMarker: unique symbol;
@@ -26,6 +26,7 @@ export declare const ShallowReactiveMarker: unique symbol;
  */
 function createReactiveObject(
   target: object,
+  isReadonly: boolean,
   baseHandlers: ProxyHandler<any>,
   proxyMap: WeakMap<Target, any>,
 ) {
@@ -33,9 +34,16 @@ function createReactiveObject(
     console.warn(`value cannot be made reactive: ${String(target)}`);
     return target;
   }
-  if (proxyMap.has(target)) {
-    return proxyMap.get(target);
+  if (target[ReactiveFlags.RAW] && !(isReadonly && target[ReactiveFlags.IS_REACTIVE])) {
+    // target 已经是Proxy
+    return target;
   }
+  // target已存在
+  const existingProxy = proxyMap.get(target);
+  if (existingProxy) {
+    return existingProxy;
+  }
+  // TODO:
   const proxy = new Proxy(target, baseHandlers);
   proxyMap.set(target, proxy);
   return proxy;
